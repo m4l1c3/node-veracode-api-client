@@ -31,7 +31,9 @@
     "async": "^2.6.0",
     "delete": "^1.1.0",
     "libxml-xsd": "^0.5.2",
+    "prompt": "^1.0.0",
     "request": "^2.85.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "sanitize-arguments": "^2.0.3"
   }
 }
