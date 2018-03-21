@@ -4,7 +4,8 @@
   "description": "veracode api client in nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests",
+    "coverage": "istanbul cover --hook-run-in-context node_modules/mocha/bin/mocha tests"
   },
   "repository": {
     "type": "git",
