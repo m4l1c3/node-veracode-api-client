@@ -1,0 +1,11 @@
+{
+    "RequestApps":"https://analysiscenter.veracode.com/api/5.0/getapplist.do",
+    "UploadApp":"https://analysiscenter.veracode.com/api/5.0/uploadfile.do",
+    "BuildInfo":"https://analysiscenter.veracode.com/api/5.0/getbuildinfo.do",
+    "Prescan":"https://analysiscenter.veracode.com/api/5.0/beginprescan.do",
+    "GetSandboxes":"https://analysiscenter.veracode.com/api/5.0/getsandboxlist.do",
+    "GenerateReport":"https://analysiscenter.veracode.com/api/3.0/generateflawreport.do",
+    "DownloadReport":"https://analysiscenter.veracode.com/api/3.0/downloadflawreport.do",
+    "GetSandboxBuildList":"https://analysiscenter.veracode.com/api/5.0/getbuildlist.do",
+    "GetBuildInfo":"https://analysiscenter.veracode.com/api/5.0/getbuildinfo.do"
+}

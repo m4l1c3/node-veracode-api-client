@@ -58,3 +58,4 @@ typings/
 .env
 
 configuration/repositories.json
+vc.json
