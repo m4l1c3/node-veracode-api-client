@@ -4,8 +4,8 @@
   "description": "veracode api client in nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests",
-    "coverage": "istanbul cover --hook-run-in-context node_modules/mocha/bin/mocha tests"
+    "test": "mocha test",
+    "coverage": "istanbul cover --hook-run-in-context node_modules/mocha/bin/mocha test"
   },
   "repository": {
     "type": "git",
