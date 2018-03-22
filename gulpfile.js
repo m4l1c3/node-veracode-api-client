@@ -1,11 +1,7 @@
 'use strict';
 
 const gulp = require('gulp'),
-    argv = require('yargs').argv,
     mocha = require('gulp-mocha'),
-    sourcemaps = require('gulp-sourcemaps'),
-    gulpif = require('gulp-if'),
-    isProduction = (argv.mode != undefined) ? true : false,
     eslint = require('gulp-eslint');
 
 
