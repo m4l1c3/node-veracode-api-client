@@ -5,95 +5,106 @@ const requests = require('request-promise-native'),
     applications = require('./lib/applications'),
     _ = require('underscore'),
     sandboxes = require('./lib/sandboxes'),
-    builds = require('./lib/builds');
+    builds = require('./lib/builds'),
+    format = require('string-format'),
+    asynchronous = require('async');
 
+//format.extend(String.prototype)
 let application_list = [];
 
-async function main() {
-    let apps = await applications.getApps();
-    console.log(apps);
-
-    _.forEach(apps, (app) => {
-        console.log(app.app_id);
-        if(application_list[app.app_id] === undefined) {
-            console.log('here');
-            application_list.push({
-                app_id
-            });
-        }
-    });
-        // _.forEach(boxes, (box) => {
-        //     if(application_list[app.app_id]) {
-        //         if(application_list[app.app_id].sandboxes[box.sandbox_id] === undefined) {
-        //             application_list[app.app_id].sandboxes[box.sandbox_id] = {
-        //                 builds: []
-        //             };
-        //         }
-        //     }
-            // let build = await builds.getBuilds(item.app_id, box.sandbox_id);
-            // build.then(async (b) => {
-            //     // console.log(build);
-            //     _.forEach(b, (bb) => {
-            //         let bui = await builds.getBuild(item.app_id, bb.build_id);
-            //         bui.then((objBuild) => {
-            //             if(application_list[item.app_id].sandboxes[box.sandbox_id].builds[bb.build_id] === undefined) {
-            //                 application_list[item.app_id].sandboxes[box.sandbox_id].builds[bb.build_id] = objBuild;
-            //             }
-            //             // console.log(application_list);
-            //         });
-            //     });
-            // });
-        // });
-
-    // });
-    console.log(application_list);
-    // _.forEach(application_list, async (app) => {
-    //     console.log('here');
-    //     // let sandboxes = await sandboxes.getSandboxes(app.app_id);
-    //     // console.log(sandboxes);
-    // });
-    // _.forEach(application_list, async (app) => {
-    //     let boxes = await sandboxes.getSandboxes(app.app_id);
-    //     console.log(boxes);
-    // });
-        // let boxes = await sandboxes.getSandboxes(app.app_id);
-        // console.log(boxes);
+async function processArray(array, processingFunc, objArgs) {
+    const promises = array.map(processingFunc.bind(null, objArgs));
+    await Promise.all(promises);
 }
-main();
 
-// apps.then((response) => {
-//     // console.log(response);
-//     _.forEach(response, (item) => {
-//         if(application_list[item.app_id] === undefined) {
-//             application_list[item.app_id] = {
-//                 sandboxes: []
-//             };
-//         }
-//         let boxes = sandboxes.getSandboxes(item.app_id);
-//         boxes.then((sandbox) => {
-//             _.forEach(sandbox, (box) => {
-//                 if(application_list[item.app_id]) {
-//                     if(application_list[item.app_id].sandboxes[box.sandbox_id] === undefined) {
-//                         application_list[item.app_id].sandboxes[box.sandbox_id] = {
-//                             builds: []
-//                         };
-//                     }
-//                 }
-//                 let build = builds.getBuilds(item.app_id, box.sandbox_id);
-//                 build.then((b) => {
-//                     // console.log(build);
-//                     _.forEach(b, (bb) => {
-//                         let bui = builds.getBuild(item.app_id, bb.build_id);
-//                         bui.then((objBuild) => {
-//                             if(application_list[item.app_id].sandboxes[box.sandbox_id].builds[bb.build_id] === undefined) {
-//                                 application_list[item.app_id].sandboxes[box.sandbox_id].builds[bb.build_id] = objBuild;
-//                             }
-//                             // console.log(application_list);
-//                         });
-//                     });
-//                 });
-//             });
-//         });
-//     });
-// });
-//
+async function appendApplicationSandboxes(app, sandbox) {
+    app.sandboxes.push({
+        sandbox_id: sandbox.sandbox_id,
+        builds: []
+    });
+}
+
+async function appendApplicationList(element, app) {
+    application_list.push({
+        app_id: app.app_id,
+        app_name: app.app_name,
+        sandboxes: []
+    });
+}
+
+async function appendSandboxBuilds(sandbox, build) {
+    sandbox.builds.push({
+        build_id: build.build_id,
+        date: build.version,
+        submitter: '',
+    });
+}
+
+async function getApps() {
+    let apps = await applications.getApps();
+    await processArray(apps, appendApplicationList);
+}
+
+async function GetSandboxBuilds(app_id, sandbox) {
+    let build_list = await builds.getBuilds(app_id, sandbox.sandbox_id);
+    await processArray(build_list, appendSandboxBuilds, sandbox);
+}
+
+async function GetSandboxes(element, application) {
+    let sandbox_list = await sandboxes.getSandboxes(application.app_id);
+    await processArray(sandbox_list, appendApplicationSandboxes, application);
+}
+
+async function GetBuild(app_id, build) {
+    let build_info = await builds.getBuild(app_id, build.build_id);
+    build.submitter = build_info[0].submitter;
+}
+
+async function getAppSandboxes(application_list) {
+    await processArray(application_list, GetSandboxes);
+}
+
+async function GetBuilds(element, application) {
+    await processArray(application.sandboxes, GetSandboxBuilds, application.app_id);
+}
+
+async function GetOnlyBuilds(element, sandboxes) { //element == app_id
+    await processArray(sandboxes.builds, GetBuild, element);
+}
+
+async function getBuilds() {
+    await processArray(application_list, GetBuilds);
+}
+
+async function GetAllSandboxBuilds(element, sandbox) {
+    await processArray(sandbox.builds, GetBuild, element);
+}
+
+async function GetAllBuilds(element, application) {
+    await processArray(application.sandboxes, GetAllSandboxBuilds, application.app_id);
+}
+
+async function getAllBuilds() {
+    await processArray(application_list, GetAllBuilds);
+}
+
+async function getSandboxBuilds() {
+    await getBuilds();
+}
+
+async function getSandboxes() {
+    await getAppSandboxes(application_list);
+}
+
+async function main() {
+    var start = new Date();
+    await getApps();
+    await getSandboxes();
+    await getSandboxBuilds();
+    await getAllBuilds();
+    console.log(application_list);
+    var end = new Date() - start;
+    console.log('Execution time: %dms', end);
+}
+
+main();
