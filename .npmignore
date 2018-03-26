@@ -22,3 +22,5 @@ CONTRIBUTING.md
 .codeclimate.yml
 .eslintrc
 appveyor.yml
+vc.json
+.vscode
