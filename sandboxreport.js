@@ -187,7 +187,7 @@ function hasValidBuilds(builds) {
     var isValid = false;
     _.any(builds, (build) => {
         let date = getBuildDate(build.date);
-        if(moment(date).isAfter(moment().subtract(365, 'days'))) {
+        if(moment(date).isAfter(moment().subtract(7, 'days'))) {
             isValid = true;
         }
     });
