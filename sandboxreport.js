@@ -108,14 +108,8 @@ function createWorkbook() {
 }
 
 function createAggregateWorksheet(workbook, data) {
-    let worksheet = workbook.addWorksheet('Aggregate'),
-        builders = [];
-    
-    worksheet.columns = [
-        {header: 'UserName', key: 'Builder'},
-        {header: 'TotalBuilds', key: 'TotalBuilds'}
-    ];
-    
+    let builders = [];
+        
     _.forEach(data, (app) => {
         _.forEach(app.sandboxes, (sandbox) => {
             _.forEach(sandbox.builds, (build) => {
@@ -135,31 +129,64 @@ function createAggregateWorksheet(workbook, data) {
             });
         });
     });
-    _.forEach(builders, (builder) => {
-        worksheet.addRow(builder);
-    });
+
+    if(builders.length) {
+        let worksheet = workbook.addWorksheet('Aggregate');
+        
+        worksheet.columns = [
+            {header: 'UserName', key: 'Builder'},
+            {header: 'TotalBuilds', key: 'TotalBuilds'}
+        ];
+        _.forEach(builders, (builder) => {
+            worksheet.addRow(builder);
+        });
+    }
 }
 
 function createScansWorksheet(workbook, data) {
-    let worksheet = workbook.addWorksheet('Scans');
-    worksheet.columns = [
-        {header: 'User', key: ''},
-        {header: 'Application', key: ''},
-        {header: 'BuildDate', key: ''},
-        {header: 'BuildID', key: ''}
-    ]
+    let scanners = [];
+    _.forEach(data, (app) => {
+        _.forEach(app.sandboxes, (sandbox) => {
+            _.forEach(sandbox.builds, (build) => {
+                scanners.push({
+                    User: build.submitter,
+                    Application: app.app_name,
+                    BuildDate: getBuildDate(build.date),
+                    BuildID: build.build_id
+                });
+            });
+        });
+    });
+    if(scanners.length) {
+        let worksheet = workbook.addWorksheet('Scans');
+        
+        worksheet.columns = [
+            {header: 'User', key: ''},
+            {header: 'Application', key: ''},
+            {header: 'BuildDate', key: ''},
+            {header: 'BuildID', key: ''}
+        ];
+        _.forEach(scanners, (scanner) => {
+            worksheet.addRow(scanner);
+        });
+    }
 }
 
 function createSpreadsheet(data) {
     let workbook = createWorkbook();
     createAggregateWorksheet(workbook, data);
     createScansWorksheet(workbook, data);
+    return workbook;
+}
+
+function getBuildDate(dateString) {
+    new Date(dateString.substring(0, dateString.lastIndexOf(' ')))
 }
 
 function hasValidBuilds(builds) {
     var isValid = false;
     _.any(builds, (build) => {
-        let date = new Date(build.date.substring(0, build.date.lastIndexOf(' ')));
+        let date = getBuildDate(build.date);
         if(moment(date).isAfter(moment().subtract(365, 'days'))) {
             isValid = true;
         }
@@ -170,6 +197,7 @@ function hasValidBuilds(builds) {
 async function main() {
     logger.info('Beginning sandbox report generation')
     let start = new Date();
+    var spreadsheet;
     await getApps();
     await getSandboxes();
     await getSandboxBuilds();
@@ -181,9 +209,18 @@ async function main() {
         logger.info(application);
     });
     if(apps.length) {
-        let spreadsheet = createSpreadsheet(apps);
+        spreadsheet = createSpreadsheet(apps);
     }
     
+    if(spreadsheet !== undefined) {
+        spreadsheet.xlsx.writeFile('./output.xlsx')
+            .then(() => {
+                logger.info('Done writing output');
+            }).catch((err) => {
+                logger.error('Error writing file: {}'.format(err));
+            });
+    }
+
     let end = (new Date() - start) / 1000;
     logger.info('Total Execution time: {} seconds'.format(end));
 }
