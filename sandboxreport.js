@@ -102,16 +102,42 @@ async function getSandboxes() {
 
 function createWorkbook() {
     let workbook = new excel.Workbook();
-    workbook.creator('it-veracodeadmins@scentsy.com');
+    workbook.creator = 'it-veracodeadmins@scentsy.com';
     workbook.created = new Date();
+    return workbook;
 }
 
 function createAggregateWorksheet(workbook, data) {
-    let worksheet = workbook.addWorksheet('Aggregate');
+    let worksheet = workbook.addWorksheet('Aggregate'),
+        builders = [];
+    
     worksheet.columns = [
-        {header: 'UserName', key: ''},
-        {header: 'TotalBuilds', key: ''}
+        {header: 'UserName', key: 'Builder'},
+        {header: 'TotalBuilds', key: 'TotalBuilds'}
     ];
+    
+    _.forEach(data, (app) => {
+        _.forEach(app.sandboxes, (sandbox) => {
+            _.forEach(sandbox.builds, (build) => {
+                var builder;
+                builder = _.find(builders, (b) => {
+                    return b.Builder === build.submitter;
+                });
+                if(builder === undefined) {
+                    let index = builders.push({
+                        Builder: build.submitter,
+                        TotalBuilds: 0
+                    });
+                    builder = builders[index - 1];
+                }
+                
+                builder.TotalBuilds += 1;
+            });
+        });
+    });
+    _.forEach(builders, (builder) => {
+        worksheet.addRow(builder);
+    });
 }
 
 function createScansWorksheet(workbook, data) {
@@ -134,7 +160,7 @@ function hasValidBuilds(builds) {
     var isValid = false;
     _.any(builds, (build) => {
         let date = new Date(build.date.substring(0, build.date.lastIndexOf(' ')));
-        if(moment(date).isAfter(moment().subtract(7, 'days'))) {
+        if(moment(date).isAfter(moment().subtract(365, 'days'))) {
             isValid = true;
         }
     });
@@ -151,10 +177,6 @@ async function main() {
     let apps = _.reject(application_list, (application) => {
         return _.any(application.sandboxes, (sandbox) => {
             return !hasValidBuilds(sandbox.builds);
-            // return _.any(sandbox.builds, (build) => {
-            //     let date = new Date(build.date.substring(0, build.date.lastIndexOf(' ')));
-                // return sandbox.builds.length < 1 && !moment(date).isAfter(moment().subtract(7, 'days'));
-            // });
         });
         logger.info(application);
     });
