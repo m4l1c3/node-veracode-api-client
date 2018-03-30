@@ -17,10 +17,10 @@ gulpfile.js
 Makefile
 README.md
 CONTRIBUTING.md
-.eslintrc
 .bithoundrc
 .codeclimate.yml
 .eslintrc
 appveyor.yml
+*.xlsx
 vc.json
 .vscode
