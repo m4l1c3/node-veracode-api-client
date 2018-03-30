@@ -12,7 +12,7 @@ const requests = require('request-promise-native'),
     _ = require('underscore'),
     asynchronous = require('async');
 
-format.extend(String.prototype)
+format.extend(String.prototype);
 
 let application_list = [];
 

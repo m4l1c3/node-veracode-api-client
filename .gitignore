@@ -60,3 +60,5 @@ typings/
 configuration/repositories.json
 vc.json
 .vscode/
+PrecompiledWeb/
+.DS_Store
