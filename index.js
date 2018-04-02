@@ -9,9 +9,6 @@ const requests = require('request-promise-native'),
     fs = require('fs'),
     builds = require('./lib/builds');
 
-let archive = __dirname + '/PrecompiledWeb/Office.zip',
-    app_id = 294561;
-
 
 async function main() {
     await uploader.upload(archive, app_id);
