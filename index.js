@@ -1,17 +1,14 @@
 'use strict';
 
-const requests = require('request-promise-native'),
-    endpoints = require('./config/endpoints.json'),
-    applications = require('./lib/applications'),
-    logger = require('./lib/logger'),
+const applications = require('./lib/applications'),
     sandboxes = require('./lib/sandboxes'),
     uploader = require('./lib/upload'),
-    fs = require('fs'),
+    prescan = require('./lib/prescan'),
     builds = require('./lib/builds');
 
-
-async function main() {
-    await uploader.upload(archive, app_id);
-}
-
-main();
+exports.main = main;
+exports.applications = applications;
+exports.uploader = uploader;
+exports.sandboxes = sandboxes;
+exports.prescan = prescan;
+exports.builds = builds;
