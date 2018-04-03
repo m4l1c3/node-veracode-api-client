@@ -6,7 +6,6 @@ const applications = require('./lib/applications'),
     prescan = require('./lib/prescan'),
     builds = require('./lib/builds');
 
-exports.main = main;
 exports.applications = applications;
 exports.uploader = uploader;
 exports.sandboxes = sandboxes;
