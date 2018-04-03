@@ -1,6 +1,6 @@
 {
   "name": "veracode-api-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "veracode api client in nodejs",
   "main": "index.js",
   "scripts": {
@@ -31,10 +31,6 @@
   "dependencies": {
     "@rgrove/parse-xml": "^1.1.1",
     "archiver": "^2.1.1",
-    "async": "^2.6.0",
-    "delete": "^1.1.0",
-    "exceljs": "^1.0.1",
-    "moment": "^2.21.0",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "string-format": "^1.0.0",
