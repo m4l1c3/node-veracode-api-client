@@ -22,4 +22,5 @@ CONTRIBUTING.md
 .eslintrc
 appveyor.yml
 *.xlsx
-LICENSE
+vc.json
+.vscode
