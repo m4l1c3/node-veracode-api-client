@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "coverage": "istanbul cover --hook-run-in-context node_modules/mocha/bin/mocha test"
+    "coverage": "istanbul cover --hook-run-in-context node_modules/mocha/bin/mocha test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,8 @@
     "request-promise-native": "^1.0.5",
     "string-format": "^1.0.0",
     "underscore": "^1.8.3",
-    "xml-js": "^1.6.2"
-  }
+    "xml-js": "^1.6.2",
+    "snyk": "^1.71.0"
+  },
+  "snyk": true
 }
