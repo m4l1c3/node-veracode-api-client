@@ -1,6 +1,6 @@
 {
   "name": "veracode-api-client",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "description": "veracode api client in nodejs",
   "main": "index.js",
   "scripts": {
