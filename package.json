@@ -26,7 +26,7 @@
     "greenkeeper-lockfile": "^1.14.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.2",
-    "gulp-mocha": "^5.0.0",
+    "gulp-mocha": "^6.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.0.4"
   },
