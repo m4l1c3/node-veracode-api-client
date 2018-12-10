@@ -24,7 +24,7 @@
     "coveralls": "^3.0.0",
     "eslint": "^5.0.1",
     "greenkeeper-lockfile": "^1.14.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-eslint": "^5.0.0",
     "gulp-mocha": "^6.0.0",
     "istanbul": "^0.4.5",
