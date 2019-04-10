@@ -31,7 +31,7 @@
     "mocha": "^6.0.0"
   },
   "dependencies": {
-    "@rgrove/parse-xml": "^1.1.1",
+    "@rgrove/parse-xml": "^2.0.1",
     "archiver": "^3.0.0",
     "moment": "2.22.2",
     "request": "^2.88.0",
