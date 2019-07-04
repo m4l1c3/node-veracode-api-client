@@ -7,7 +7,8 @@
     "test": "mocha test",
     "coverage": "istanbul cover --hook-run-in-context node_modules/mocha/bin/mocha test",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,7 @@
     "moment": "2.22.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "snyk": "1.136.2",
+    "snyk": "^1.189.0",
     "string-format": "^2.0.0",
     "underscore": "^1.8.3",
     "xml-js": "^1.6.9"
