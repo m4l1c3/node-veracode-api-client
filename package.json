@@ -36,7 +36,7 @@
     "moment": "2.22.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "snyk": "1.136.2",
+    "snyk": "1.289.1",
     "string-format": "^2.0.0",
     "underscore": "^1.8.3",
     "xml-js": "^1.6.9"
