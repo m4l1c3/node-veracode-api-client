@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.12.0
+version: v1.14.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:moment:20161019':
@@ -15,3 +15,28 @@ patch:
   'npm:moment:20160126':
     - format-string > moment:
         patched: '2018-04-08T23:18:20.790Z'
+  SNYK-JS-LODASH-567746:
+    - snyk > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - archiver > async > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - request-promise-native > request-promise-core > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > inquirer > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > snyk-config > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > snyk-nodejs-lockfile-parser > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > snyk-nuget-plugin > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > snyk-php-plugin > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        patched: '2020-05-01T06:54:17.545Z'
